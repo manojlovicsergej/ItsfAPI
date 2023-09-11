@@ -30,7 +30,7 @@ public class ItsfController : ControllerBase
                 type = ResponseType.NotFound;
             }
 
-            return Ok(ResponseHandler.GetAppResponse(type, response));
+            return Ok(response);
         }
         catch (Exception e)
         {
@@ -39,9 +39,8 @@ public class ItsfController : ControllerBase
         }
     }
 
-    [HttpPost]
-    [Route("add-player")]
-    public IActionResult Post([FromBody] PlayerDto playerDto)
+    [HttpPost("add-player")]
+    public IActionResult AddPlayer([FromBody] PlayerDto playerDto)
     {
         ResponseType type = ResponseType.Success;
         try
@@ -54,6 +53,6 @@ public class ItsfController : ControllerBase
             return BadRequest("Error when adding player");
         }
     }
-    
-    
+
+
 }
