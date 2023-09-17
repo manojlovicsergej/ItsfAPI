@@ -54,5 +54,34 @@ public class ItsfController : ControllerBase
         }
     }
 
+    [HttpPut("update-player")]
+    public IActionResult UpdatePlayer([FromBody] PlayerDto playerDto)
+    {
+        ResponseType type = ResponseType.Success;
+        try
+        {
+            _dbHelper.UpdatePlayer(playerDto);
+            return Ok(ResponseHandler.GetAppResponse(type, playerDto));
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Error when updating player");
+        }
+    }
 
+    [HttpDelete("delete-player")]
+    public IActionResult DeletePlayer([FromQuery] int playerId)
+    {
+        ResponseType type = ResponseType.Success;
+        try
+        {
+            _dbHelper.DeletePlayer(playerId);
+            return Ok(ResponseHandler.GetAppResponse(type, playerId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Error when adding player");
+        }
+    }
+    
 }

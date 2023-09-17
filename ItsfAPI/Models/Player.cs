@@ -1,5 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using ItsfAPI.Dto;
 using ItsfAPI.Enums;
 
 namespace ItsfAPI.Models;
@@ -23,6 +24,17 @@ public class Player
     public Player()
     {
         PlayerGames = new HashSet<PlayerGames>();
+    }
+    
+    public void UpdatePlayer(PlayerDto playerDto)
+    {
+        FirstName = playerDto.FirstName;
+        LastName = playerDto.LastName;
+        DateOfBirth = playerDto.DateOfBirth;
+        Position = playerDto.Position;
+        Rating = playerDto.Rating;
+        Winrate = playerDto.Winrate;
+        Title = playerDto.Title;
     }
 
     public Player(string firstName, string lastName, DateTime dateOfBirth, Position position, int rating,

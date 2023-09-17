@@ -1,5 +1,6 @@
 ﻿using ItsfAPI.Dto;
 using ItsfAPI.EfCore;
+using Microsoft.AspNetCore.Http.HttpResults;
 
 namespace ItsfAPI.Models;
 
@@ -48,6 +49,18 @@ public class DbHelper
         _context.SaveChanges();
     }
 
+    public void UpdatePlayer(PlayerDto playerDto)
+    {
+        var player = _context.Players.Where(x => x.Id == playerDto.Id).FirstOrDefault();
+
+        if (player is not null)
+        {
+            player.UpdatePlayer(playerDto);
+        }
+        
+        _context.SaveChanges();
+    }
+
     public void DeletePlayer(int playerId)
     {
         var player = _context.Players.Where(x => x.Id == playerId).FirstOrDefault();
@@ -56,5 +69,7 @@ public class DbHelper
         {
             _context.Players.Remove(player);
         }
+
+        _context.SaveChanges();
     }
 }
