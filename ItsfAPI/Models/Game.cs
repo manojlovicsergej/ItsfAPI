@@ -22,7 +22,12 @@ public class Game
     {
         GamePlayers = new HashSet<PlayerGames>();
     }
-
+    
+    public void UpdateGameResult(int hostResult, int guestResult)
+    {
+        HostResult = hostResult;
+        GuestResult = guestResult;
+    }
     public Game(string gameName, string hostName, int hostResult, string guestName, int guestResult)
     {
         GuestName = guestName;

@@ -1,6 +1,7 @@
 ﻿using ItsfAPI.Dto;
 using ItsfAPI.EfCore;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Routing.Template;
 
 namespace ItsfAPI.Models;
 
@@ -33,6 +34,42 @@ public class DbHelper
         return players;
     }
 
+    public List<GameDto> GetAllGames()
+    {
+        List<GameDto> games = new List<GameDto>();
+        var list = _context.Games.ToList();
+
+        list.ForEach(x => games.Add(new GameDto
+        {
+            Id = x.Id,
+            GameName = x.GameName,
+            HostName = x.HostName,
+            HostResult = x.HostResult,
+            GuestName = x.GuestName,
+            GuestResult = x.GuestResult
+        }));
+
+        return games;
+    }
+
+    public List<GameDto> GetCurrentGames()
+    {
+        List<GameDto> games = new List<GameDto>();
+        var list = _context.Games.Where(x => x.HostResult == 0 && x.GuestResult == 0).ToList();
+
+        list.ForEach(x => games.Add(new GameDto
+        {
+            Id = x.Id,
+            GameName = x.GameName,
+            HostName = x.HostName,
+            HostResult = x.HostResult,
+            GuestName = x.GuestName,
+            GuestResult = x.GuestResult
+        }));
+
+        return games;
+    }
+
     public void SavePlayers(PlayerDto playerDto)
     {
         Player player = new Player(
@@ -43,7 +80,7 @@ public class DbHelper
             playerDto.Rating,
             playerDto.Winrate,
             playerDto.Title
-            );
+        );
 
         _context.Players.Add(player);
         _context.SaveChanges();
@@ -57,7 +94,20 @@ public class DbHelper
         {
             player.UpdatePlayer(playerDto);
         }
-        
+
+        _context.SaveChanges();
+    }
+
+    public void UpdateGame(int gameId, int hostResult, int guestResult)
+    {
+        var game = _context.Games.Where(x => x.Id == gameId).FirstOrDefault();
+
+        if (game is not null)
+        {
+            game.UpdateGameResult(hostResult, guestResult);
+        }
+
+        _context.Games.Update(game);
         _context.SaveChanges();
     }
 
@@ -68,6 +118,47 @@ public class DbHelper
         if (player is not null)
         {
             _context.Players.Remove(player);
+        }
+
+        _context.SaveChanges();
+    }
+
+    public void DeleteGame(int gameId)
+    {
+        var game = _context.Games.Where(x => x.Id == gameId).FirstOrDefault();
+
+        if (game is not null)
+        {
+            _context.Games.Remove(game);
+        }
+
+        _context.SaveChanges();
+    }
+
+    public void AddGame(GameDto gameDto)
+    {
+        Game game = new Game
+        {
+            GameName = gameDto.GameName,
+            HostName = gameDto.HostName,
+            HostResult = gameDto.HostResult,
+            GuestName = gameDto.GuestName,
+            GuestResult = gameDto.GuestResult
+        };
+
+        _context.Games.Add(game);
+        _context.SaveChanges();
+
+        foreach (var player in gameDto.GamePlayers)
+        {
+            var gamePlayer = new PlayerGames
+            {
+                GameId = game.Id,
+                PlayerId = player.PlayerId,
+                Side = player.Side
+            };
+
+            _context.PlayerGames.Add(gamePlayer);
         }
 
         _context.SaveChanges();

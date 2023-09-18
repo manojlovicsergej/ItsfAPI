@@ -10,7 +10,7 @@ public class GameDto : IGameDto
     public int HostResult { get; set; }
     public string GuestName { get; set; }
     public int GuestResult { get; set; }
-    public ICollection<PlayerGames> GamePlayers { get; set; }
+    public ICollection<PlayerGamesDto> GamePlayers { get; set; }
 }
 
 public interface IGameDto
@@ -24,5 +24,5 @@ public interface IGameDto
     string GuestName { get; set; }
     int GuestResult { get; set; }
 
-    ICollection<PlayerGames> GamePlayers { get; set; }
+    ICollection<PlayerGamesDto> GamePlayers { get; set; }
 }

@@ -10,7 +10,6 @@ public class PlayerGames
     [Key,Required]
     public int Id { get; set; }
     
-    
     public int PlayerId { get; set; }
     public Player Player { get; set; }
 
@@ -18,4 +17,13 @@ public class PlayerGames
     public Game Game { get; set; }
 
     public Side Side { get; set; }
+    
+    public PlayerGames(){}
+
+    public PlayerGames(int playerId, int gameId, Side side)
+    {
+        PlayerId = playerId;
+        GameId = gameId;
+        Side = side;
+    }
 }
