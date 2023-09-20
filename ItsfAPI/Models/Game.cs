@@ -15,6 +15,9 @@ public class Game
 
     public string GuestName { get; set; }
     public int GuestResult { get; set; }
+    
+    public int? TournamentId { get; set; }
+    public Tournament Tournament { get; set; }
 
     public ICollection<PlayerGames> GamePlayers { get; set; }
 
@@ -28,6 +31,12 @@ public class Game
         HostResult = hostResult;
         GuestResult = guestResult;
     }
+
+    public void UpdateGameToTournament(int tournamentId)
+    {
+        TournamentId = tournamentId;
+    }
+    
     public Game(string gameName, string hostName, int hostResult, string guestName, int guestResult)
     {
         GuestName = guestName;

@@ -1,6 +1,4 @@
-﻿using ItsfAPI.Models;
-
-namespace ItsfAPI.Dto;
+﻿namespace ItsfAPI.Dto;
 
 public class GameDto : IGameDto
 {

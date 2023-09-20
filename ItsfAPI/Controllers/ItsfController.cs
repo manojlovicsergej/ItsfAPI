@@ -61,6 +61,28 @@ public class ItsfController : ControllerBase
         }
     }
     
+    [HttpGet("get-all-tournaments")]
+    public IActionResult GetAllTournaments()
+    {
+        ResponseType type = ResponseType.Success;
+        try
+        {
+            ICollection<TournamentDto> response = _dbHelper.GetAllTournaments();
+            type = ResponseType.Success;
+            if (!response.Any())
+            {
+                type = ResponseType.NotFound;
+            }
+
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            type = ResponseType.Failure;
+            return BadRequest("Error when get all games");
+        }
+    }
+    
     [HttpGet("get-current-games")]
     public IActionResult GetCurrentGames()
     {
@@ -91,6 +113,21 @@ public class ItsfController : ControllerBase
         {
             _dbHelper.SavePlayers(playerDto);
             return Ok(ResponseHandler.GetAppResponse(type, playerDto));
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Error when adding player");
+        }
+    }
+    
+    [HttpPost("add-tournament")]
+    public IActionResult AddTournament([FromBody] TournamentDto tournamentDto)
+    {
+        ResponseType type = ResponseType.Success;
+        try
+        {
+            _dbHelper.AddTournament(tournamentDto);
+            return Ok(ResponseHandler.GetAppResponse(type, tournamentDto));
         }
         catch (Exception e)
         {
@@ -129,13 +166,13 @@ public class ItsfController : ControllerBase
     }
     
     [HttpPut("update-game")]
-    public IActionResult UpdateGame([FromQuery] int gameId, [FromQuery] int hostResult, [FromQuery] int guestResult)
+    public IActionResult UpdateGame([FromBody] ZavrsiUtakmicuDto zavrsiUtakmicuDto)
     {
         ResponseType type = ResponseType.Success;
         try
         {
-            _dbHelper.UpdateGame(gameId,hostResult,guestResult);
-            return Ok(ResponseHandler.GetAppResponse(type, gameId));
+            _dbHelper.UpdateGame(zavrsiUtakmicuDto.GameId,zavrsiUtakmicuDto.HostResult,zavrsiUtakmicuDto.GuestResult);
+            return Ok(ResponseHandler.GetAppResponse(type, zavrsiUtakmicuDto));
         }
         catch (Exception e)
         {
@@ -158,6 +195,21 @@ public class ItsfController : ControllerBase
         }
     }
     
+    [HttpDelete("delete-tournament")]
+    public IActionResult DeleteTournament([FromQuery] int tournamentId)
+    {
+        ResponseType type = ResponseType.Success;
+        try
+        {
+            _dbHelper.DeleteTournament(tournamentId);
+            return Ok(ResponseHandler.GetAppResponse(type, tournamentId));
+        }
+        catch (Exception e)
+        {
+            return BadRequest("Error when adding player");
+        }
+    }
+    
     [HttpDelete("delete-game")]
     public IActionResult DeleteGame([FromQuery] int gameId)
     {
@@ -170,6 +222,29 @@ public class ItsfController : ControllerBase
         catch (Exception e)
         {
             return BadRequest("Error when adding player");
+        }
+    }
+    
+    [HttpGet("get-dashboard")]
+    public IActionResult GetDashboardData()
+    {
+        ResponseType type = ResponseType.Success;
+        try
+        {
+            DashboardDto response = _dbHelper.GetDashboardData();
+            type = ResponseType.Success;
+            
+            if (response is null)
+            {
+                type = ResponseType.NotFound;
+            }
+
+            return Ok(response);
+        }
+        catch (Exception e)
+        {
+            type = ResponseType.Failure;
+            return BadRequest("Error when get all games");
         }
     }
     
