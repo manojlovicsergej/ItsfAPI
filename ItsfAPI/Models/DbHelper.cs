@@ -224,9 +224,9 @@ public class DbHelper
         int brojUtakmica = _context.Games.Count();
         int brojTurnira = _context.Tournaments.Count();
 
-        Player igrac = _context.Players.LastOrDefault();
-        Tournament turnir = _context.Tournaments.LastOrDefault();
-        Game utakmica = _context.Games.LastOrDefault();
+        Player igrac = _context.Players.OrderByDescending(x => x.Id).FirstOrDefault();
+        Tournament turnir = _context.Tournaments.OrderByDescending(x => x.Id).FirstOrDefault();
+        Game utakmica = _context.Games.OrderByDescending(x => x.Id).FirstOrDefault();
 
         PlayerDto igracDto = new PlayerDto()
         {

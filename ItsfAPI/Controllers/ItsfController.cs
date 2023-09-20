@@ -244,7 +244,7 @@ public class ItsfController : ControllerBase
         catch (Exception e)
         {
             type = ResponseType.Failure;
-            return BadRequest("Error when get all games");
+            return BadRequest("Error when get dashboard data");
         }
     }
     
