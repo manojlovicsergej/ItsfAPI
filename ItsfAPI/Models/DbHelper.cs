@@ -128,6 +128,14 @@ public class DbHelper
     public void DeleteTournament(int tournamentId)
     {
         var tournament = _context.Tournaments.Where(x => x.Id == tournamentId).FirstOrDefault();
+        var games = _context.Games.Where(x => x.TournamentId == tournament.Id).ToList();
+
+        foreach (var game in games)
+        { 
+            game.UpdateGameToTournament(null);
+            _context.Update(game);
+            _context.SaveChanges();
+        }
 
         if (tournament is not null)
         {

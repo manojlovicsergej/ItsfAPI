@@ -32,7 +32,7 @@ public class Game
         GuestResult = guestResult;
     }
 
-    public void UpdateGameToTournament(int tournamentId)
+    public void UpdateGameToTournament(int? tournamentId)
     {
         TournamentId = tournamentId;
     }
